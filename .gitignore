@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Local artifacts
+*.pdf
+!EXAMPLE_PDF.pdf
+
+# Editors / OS
+.vscode/
+.idea/
+.claude/
+.DS_Store
