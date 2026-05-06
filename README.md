@@ -81,46 +81,14 @@ without re-uploading.
 
 ---
 
-## Deploy free, 24/7
-
-The bot is long-polling, so any host that can run a Python worker process is
-enough. Two genuinely free options:
-
-### Option A — Koyeb (≈ 5 min, no credit card)
-
-1. Push this repo to GitHub.
-2. Sign in at [koyeb.com](https://www.koyeb.com) with GitHub.
-3. **Create Service → GitHub → your repo**.
-4. Service type: **Worker** *(not Web — no port needed)*.
-5. Instance: **Free**.
-6. Builder: **Buildpack** *(auto-detects Python from `requirements.txt` and
-   uses the `Procfile`)*.
-7. **Environment variables** → add `TELEGRAM_BOT_TOKEN`.
-8. Deploy. Logs should show `Bot started. Waiting for messages…`.
-
-### Option B — Oracle Cloud Always Free VM (most generous, ≈ 30–60 min)
-
-A real ARM VM (4 vCPU / 24 GB), free forever. Set up Ubuntu, clone the repo,
-`pip install -r requirements.txt`, and run under `systemd` so it auto-restarts
-on boot.
-
-### Avoid for this use case
-
-- **Render free / Replit free** — sleep on inactivity, kill the long poll.
-- **Railway** — only $5 trial credit now.
-- **Heroku** — no free tier.
-- **GitHub Actions / cron** — capped at 6h per run, wrong shape.
-
----
-
 ## Environment variables
 
 | Variable             | Required | Description                          |
 | -------------------- | -------- | ------------------------------------ |
 | `TELEGRAM_BOT_TOKEN` | Yes      | Token from [@BotFather](https://t.me/BotFather). |
 
-Locally these come from `.env`; on Koyeb / Oracle / etc. they're set in the
-platform UI. **Never commit `.env`** — `.gitignore` already excludes it.
+Locally these come from `.env`. **Never commit `.env`** — `.gitignore` already
+excludes it.
 
 ---
 
