@@ -19,6 +19,9 @@ def parse_pdf(path: str):
     """
     transactions = []
     current_year = None
+    prev_month_idx = -1
+    _MONTH_IDX = {'Jan':0,'Feb':1,'Mar':2,'Apr':3,'May':4,'Jun':5,
+                  'Jul':6,'Aug':7,'Sep':8,'Oct':9,'Nov':10,'Dec':11}
     metadata = {"account": "", "date_range": ""}
 
     with pdfplumber.open(path) as pdf:
@@ -44,6 +47,7 @@ def parse_pdf(path: str):
                     month_match = re.match(r"[A-Za-z]+\s+(\d{4})$", cell0)
                     if month_match:
                         current_year = int(month_match.group(1))
+                        prev_month_idx = -1
                         continue
 
                     # Skip column headers and total rows
@@ -57,6 +61,14 @@ def parse_pdf(path: str):
 
                     day = date_match.group(1)
                     month_abbr = date_match.group(2)
+
+                    # Auto-increment year when months roll backward (e.g. Dec → Jan)
+                    mi = _MONTH_IDX.get(month_abbr, -1)
+                    if current_year and mi >= 0 and prev_month_idx >= 0 and mi < prev_month_idx:
+                        current_year += 1
+                    if mi >= 0:
+                        prev_month_idx = mi
+
                     date_str = f"{day} {month_abbr} {current_year or ''}"
 
                     # Parse name cell: "PARTY NAME | CITY | CODE" (newlines act as delimiters)
